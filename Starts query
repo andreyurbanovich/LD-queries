@@ -1,0 +1,11 @@
+WITH ref AS(
+SELECT DISTINCT(user_id)
+FROM user_metrics_live
+WHERE fieldAcquisitionChannelFirst LIKE '%commercial%'
+)
+SELECT DISTINCT(missionNumber),COUNT(DISTINCT(events_live.userID))
+FROM events_live INNER JOIN ref ON events_live.userID=ref.user_id
+WHERE eventName='missionStarted'
+AND eventDate  BETWEEN '2015-11-15' AND '2015-12-15'
+GROUP BY missionNumber
+ORDER BY missionNumber
